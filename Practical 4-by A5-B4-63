@@ -1,0 +1,48 @@
+#include <stdio.h>
+
+int main() {
+    int resources[100], n, constraint;
+    int i, start = 0, end = 0, currSum = 0, maxSum = 0;
+    int bestStart = -1, bestEnd = -1;
+
+    printf("Enter number of tasks: ");
+    scanf("%d", &n);
+
+    printf("Enter resources for each task:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &resources[i]);
+    }
+
+    printf("Enter resource constraint: ");
+    scanf("%d", &constraint);
+
+    while (end < n) {
+        currSum += resources[end];
+
+        while (currSum > constraint && start <= end) {
+            currSum -= resources[start];
+            start++;
+        }
+
+        if (currSum > maxSum && currSum <= constraint) {
+            maxSum = currSum;
+            bestStart = start;
+            bestEnd = end;
+        }
+
+        end++;
+    }
+
+    if (bestStart == -1) {
+        printf("No feasible subarray.\n");
+    } else {
+        printf("Best subarray: ");
+        for (i = bestStart; i <= bestEnd; i++) {
+            printf("%d ", resources[i]);
+        }
+        printf("\nTotal resources used = %d\n", maxSum);
+    }
+
+    return 0;
+}
+
